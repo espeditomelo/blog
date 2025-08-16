@@ -2,7 +2,7 @@ package com.espeditomelo.blog.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -14,20 +14,20 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne
-    private Post post;
-
-    /*
-    @Lob
-    @NotBlank
-    private Comment commentPost;
-    */
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false)
+    private Post postLike;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdAt;
+
+    public Like() {}
 
     public Long getId() {
         return id;
@@ -37,29 +37,21 @@ public class Like {
         this.id = id;
     }
 
-    public User getUser() {
+    public @NotNull User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(@NotNull User user) {
         this.user = user;
     }
 
-    public Post getPost() {
-        return post;
+    public @NotNull Post getPostLike() {
+        return postLike;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPostLike(@NotNull Post postLike) {
+        this.postLike = postLike;
     }
-
-//    public @NotBlank Comment getComment() {
-//        return commentPost;
-//    }
-//
-//    public void setComment(@NotBlank Comment commentPost) {
-//        this.commentPost = commentPost;
-//    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

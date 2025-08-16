@@ -44,13 +44,17 @@ public class Post {
     @JoinColumn(name = "category_id",referencedColumnName = "id", nullable = false)
     private Category category;
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private List<ImagePost> images = new ArrayList<>();
+    @OneToMany(mappedBy = "postImage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ImagePost> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postLike", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Like> likes = new ArrayList<>();
 
     public Post() {}
 
@@ -111,7 +115,7 @@ public class Post {
         this.category = category;
     }
 
-    /*
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -119,6 +123,7 @@ public class Post {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
     public List<ImagePost> getImages() {
         return images;
     }
@@ -126,5 +131,12 @@ public class Post {
     public void setImages(List<ImagePost> images) {
         this.images = images;
     }
-    */
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
 }
