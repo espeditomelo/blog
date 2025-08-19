@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "POSTS")
@@ -99,13 +100,9 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(User user) { this.user = user; }
 
     public Category getCategory() {
         return category;
@@ -114,7 +111,6 @@ public class Post {
     public void setCategory(Category category) {
         this.category = category;
     }
-
 
     public List<Comment> getComments() {
         return comments;
