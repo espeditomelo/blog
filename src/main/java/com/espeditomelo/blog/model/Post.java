@@ -41,7 +41,7 @@ public class Post {
     private User user;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id",referencedColumnName = "id", nullable = false)
     private Category category;
 

@@ -20,6 +20,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> findAllWithCategory() {
+        return postRepository.findAllWithCategory();
+    }
+
+    @Override
     public Post findById(Long id) {
         return postRepository.findById(id).get();
     }

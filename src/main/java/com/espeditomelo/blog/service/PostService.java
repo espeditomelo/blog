@@ -9,6 +9,7 @@ import java.util.List;
 public interface PostService {
 
     List<Post> findAll();
+    List<Post> findAllWithCategory();
     Post findById(Long id);
     Post save(Post post);
 
