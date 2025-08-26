@@ -20,8 +20,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAllWithCategory() {
-        return postRepository.findAllWithCategory();
+    public List<Post> findAllWithCategoryAndUser() {
+        return postRepository.findAllWithCategoryAndUser();
     }
 
     @Override
