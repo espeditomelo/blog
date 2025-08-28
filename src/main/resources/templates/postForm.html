@@ -2,6 +2,13 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+
     <title>Espedito Melo - Java | Software Development | Cloud | AI | Database</title>
     <p style="padding-left: 20px"><strong>Espedito Melo</strong> - Java | Software Development | Cloud | AI | Database</p>
 </head>
@@ -24,6 +31,7 @@
         </nav>
 
         <div>
+            <th:block th:include="validationMessage"></th:block>
             <form method="post" th:object="${post}">
                 <div class="form-group">
                     <label for="category">Category</label>
@@ -57,9 +65,12 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" name="title" placeholder="Title *">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Title *">
                 </div>
-                <textarea type="text" class="form-control" name="body" placeholder="Text *"></textarea>
+
+                <label for="body">Body</label>
+                <textarea type="text" class="form-control" id="summernote" th:field="*{body}" placeholder="Text *"></textarea>
 
                 <small class="form-text text-muted">(*) Required</small>
 
@@ -71,5 +82,14 @@
 
     </div>
 </section>
+
+<script>
+    $('#summernote').summernote({
+        placeholder: "Text *",
+        tabsize: 2,
+        height: 300
+    });
+</script>
+
 </body>
 </html>

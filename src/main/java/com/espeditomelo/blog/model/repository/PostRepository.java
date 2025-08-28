@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Post p JOIN FETCH p.category JOIN FETCH p.user ORDER BY p.createdAt DESC")
+    @Query("SELECT p FROM Post p JOIN FETCH p.category JOIN FETCH p.user WHERE p.status = 'A' ORDER BY p.createdAt DESC")
     List<Post> findAllWithCategoryAndUser();
 }

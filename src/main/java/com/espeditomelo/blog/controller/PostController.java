@@ -63,12 +63,17 @@ public class PostController {
     }
 
     @RequestMapping(value = "/newpost", method = RequestMethod.POST)
-    public String savePost(@Valid Post post, BindingResult  bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView savePost(@Valid Post post, BindingResult  bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
-            return "redirect:/newpost";
+            ModelAndView modelAndView = new ModelAndView("postForm");
+            modelAndView.addObject("categories", categoryService.findAll());
+            modelAndView.addObject("users", userService.findAll());
+            modelAndView.addObject("post", post);
+            modelAndView.addObject("message", "All required fields must be completed");
+            return modelAndView;
         }
         postService.save(post);
-        return "redirect:/posts";
+        redirectAttributes.addFlashAttribute("success", "Post created successfully");
+        return new ModelAndView("redirect:/posts");
     }
-
 }
