@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +31,11 @@ public class PostController {
     @Autowired
     UserService userService;
 
+    @GetMapping(value = "/")
+    public String redirectToPosts(){
+        return "redirect:/posts";
+    }
+
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
     public ModelAndView getPosts() {
         ModelAndView modelAndView = new ModelAndView("posts");
@@ -46,8 +52,8 @@ public class PostController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String getAdminForm() {
+    @GetMapping("/admin")
+    public String getAdminForm(){
         return "adminForm";
     }
 
