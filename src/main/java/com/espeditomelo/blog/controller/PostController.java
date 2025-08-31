@@ -52,11 +52,6 @@ public class PostController {
         return modelAndView;
     }
 
-    @GetMapping("/admin")
-    public String getAdminForm(){
-        return "adminForm";
-    }
-
     @RequestMapping(value = "/newpost", method = RequestMethod.GET)
     public ModelAndView getPostForm() {
         ModelAndView modelAndView = new ModelAndView("postForm");
