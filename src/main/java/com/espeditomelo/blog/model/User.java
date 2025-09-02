@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @NotBlank
@@ -38,7 +38,7 @@ public class User implements UserDetails {
 
     @NotNull
     @Column(nullable = false)
-    private boolean isAdmin = false;
+    private Boolean admin = false;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Column(updatable = false)
@@ -47,6 +47,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Post> posts = new ArrayList<>();
+
+    @NotNull
+    @Column(nullable = false)
+    private Boolean enable = true;
 
     public User() {}
 
@@ -82,12 +86,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public Boolean getAdmin() {
+        return admin;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -104,6 +108,14 @@ public class User implements UserDetails {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public @NotNull Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
     // ------ UerDetails
@@ -130,7 +142,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        if(isAdmin){
+        if(getAdmin()){
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));

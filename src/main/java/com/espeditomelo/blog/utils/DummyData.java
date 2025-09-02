@@ -30,33 +30,31 @@ public class DummyData {
     @Autowired
     UserServiceImpl userService;
 
-    @PostConstruct
+    //@PostConstruct
     public void savePosts(){
 
-//        User user1 =  new User();
-//        user1.setUsername("antonio");
-//        user1.setAdmin(false);
-//        user1.setPassword("123");
-//        user1.setEmail("e@gmail.com");
-//        userRepository.save(user1);
-//
-//        Category category1 = new Category();
-//        category1.setName("database");
-//        categoryRepository.save(category1);
 
         User user2 =  new User();
         user2.setUsername("admin");
         user2.setAdmin(true);
-        user2.setPassword("123");
-        user2.setEmail("admin@gmail.com");
-        // userRepository.save(user2);
+        user2.setPassword("1");
+        user2.setEmail("admin@espeditomelo.com");
         userService.save(user2);
 
-//        Category category2 = new Category();
-//        category2.setName("database");
-//        categoryRepository.save(category2);
+        Category category1 = new Category();
+        category1.setName("Database");
+        categoryRepository.save(category1);
 
-        /*Optional<User> userOptional = userRepository.findById(1L);
+        Category category2 = new Category();
+        category2.setName("Java");
+        categoryRepository.save(category2);
+
+        Category category3 = new Category();
+        category3.setName("Cloud");
+        categoryRepository.save(category3);
+
+       /*
+        Optional<User> userOptional = userRepository.findById(1L);
         Optional<Category> categoryOptional = categoryRepository.findById(1L);
 
         if(userOptional.isPresent() && categoryOptional.isPresent()){

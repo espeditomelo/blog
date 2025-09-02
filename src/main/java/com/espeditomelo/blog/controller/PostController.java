@@ -56,7 +56,7 @@ public class PostController {
     public ModelAndView getPostForm() {
         ModelAndView modelAndView = new ModelAndView("postForm");
         List<Category> categories = categoryService.findAll();
-        List<User> users = userService.findAll();
+        List<User> users = userService.findAllEnabled();
         modelAndView.addObject("categories", categories);
         modelAndView.addObject("users", users);
         modelAndView.addObject("post", new Post());
@@ -68,7 +68,7 @@ public class PostController {
         if(bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("postForm");
             modelAndView.addObject("categories", categoryService.findAll());
-            modelAndView.addObject("users", userService.findAll());
+            modelAndView.addObject("users", userService.findAllEnabled());
             modelAndView.addObject("post", post);
             modelAndView.addObject("message", "All required fields must be completed");
             return modelAndView;
