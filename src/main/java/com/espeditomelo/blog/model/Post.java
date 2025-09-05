@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "POSTS")
@@ -39,10 +40,9 @@ public class Post {
     @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
     private User user;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id",referencedColumnName = "id", nullable = false)
-    private Category category;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PostCategory> postCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -103,12 +103,35 @@ public class Post {
 
     public void setUser(User user) { this.user = user; }
 
-    public Category getCategory() {
-        return category;
+    public void addCategory(Category category){
+        PostCategory postCategory = new PostCategory(this, category);
+        postCategories.add(postCategory);
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void removeCategory(Category category){
+        PostCategory postCategory = postCategories.stream()
+                .filter(pc -> pc.getCategory().equals(category))
+                .findFirst()
+                .orElse(null);
+        if(postCategory != null){
+            postCategories.remove(postCategory);
+        }
+    }
+
+    @Transient
+    public List<Category> getCategories(){
+        return postCategories.stream()
+                .map(PostCategory::getCategory)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<PostCategory> getPostCategories() {
+        return postCategories;
+    }
+
+    public void setPostCategories(List<PostCategory> postCategories) {
+        this.postCategories = postCategories;
     }
 
     public List<Comment> getComments() {

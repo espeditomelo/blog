@@ -10,6 +10,7 @@ public interface PostService {
 
     List<Post> findAll();
     List<Post> findAllWithCategoryAndUser();
+    List<Post> findAllWithCategoryAndUserByCategory(Long id);
     Post findById(Long id);
     Post save(Post post);
 

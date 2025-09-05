@@ -4,6 +4,7 @@ import com.espeditomelo.blog.model.Post;
 import com.espeditomelo.blog.model.repository.PostRepository;
 import com.espeditomelo.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findAllWithCategoryAndUser() {
         return postRepository.findAllWithCategoryAndUser();
+    }
+
+    @Override
+    public List<Post> findAllWithCategoryAndUserByCategory(Long id) {
+        return postRepository.findAllWithCategoryAndUserByCategory(id);
     }
 
     @Override

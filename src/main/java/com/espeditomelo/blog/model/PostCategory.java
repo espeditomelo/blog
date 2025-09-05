@@ -3,34 +3,36 @@ package com.espeditomelo.blog.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "CATEGORIES")
-public class Category {
+@Table(name = "POST_CATEGORIES")
+public class PostCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    @JsonIgnore
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<PostCategory> postCategories= new ArrayList<>();
+    public PostCategory() {};
 
-    public Category() {}
+    public PostCategory(Post post, Category category){
+        this.post = post;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;
@@ -40,12 +42,20 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Post getPost() {
+        return post;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -55,11 +65,4 @@ public class Category {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    public List<Post> getPosts(){
-        return postCategories.stream()
-                .map(PostCategory::getPost)
-                .toList();
-    }
-
 }

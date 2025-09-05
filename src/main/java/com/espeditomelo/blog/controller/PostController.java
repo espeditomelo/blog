@@ -10,13 +10,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,6 +42,15 @@ public class PostController {
         return modelAndView;
     }
 
+    // under construction
+    @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
+    public ModelAndView getPostsByCategory(@PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("posts");
+        List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
+        modelAndView.addObject("posts", posts);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
     public ModelAndView getPostDetailed(@PathVariable("id") long id) {
         ModelAndView modelAndView = new ModelAndView("postDetailed");
@@ -55,23 +62,36 @@ public class PostController {
     @RequestMapping(value = "/newpost", method = RequestMethod.GET)
     public ModelAndView getPostForm() {
         ModelAndView modelAndView = new ModelAndView("postForm");
-        List<Category> categories = categoryService.findAll();
         List<User> users = userService.findAllEnabled();
-        modelAndView.addObject("categories", categories);
-        modelAndView.addObject("users", users);
+        modelAndView.addObject("categories", categoryService.findAll());
+        modelAndView.addObject("users", userService.findAllEnabled());
         modelAndView.addObject("post", new Post());
+        modelAndView.addObject("selectedCategoryIds", new ArrayList<Long>());
+
         return modelAndView;
     }
 
     @RequestMapping(value = "/newpost", method = RequestMethod.POST)
-    public ModelAndView savePost(@Valid Post post, BindingResult  bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelAndView savePost(@Valid Post post, BindingResult  bindingResult,
+                                 RedirectAttributes redirectAttributes,
+                                 @RequestParam(value = "categoryIds", required = true) List<Long> categoryIds) {
         if(bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("postForm");
             modelAndView.addObject("categories", categoryService.findAll());
             modelAndView.addObject("users", userService.findAllEnabled());
             modelAndView.addObject("post", post);
+            modelAndView.addObject("selectedCategoryIds", categoryIds != null ? categoryIds : new ArrayList<>());
             modelAndView.addObject("message", "All required fields must be completed");
             return modelAndView;
+        }
+
+        if(categoryIds != null && !categoryIds.isEmpty()) {
+            for(Long categoryId : categoryIds) {
+                Category category = categoryService.findById(categoryId);
+                if (category != null) {
+                    post.addCategory(category);
+                }
+            }
         }
         postService.save(post);
         redirectAttributes.addFlashAttribute("success", "Post created successfully");

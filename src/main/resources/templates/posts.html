@@ -38,7 +38,11 @@
                             <span th:utext="${#strings.abbreviate(post.body,400)}"></span>
                         </p>
                         <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
-                            <span th:text="${post.category.name}"></span>
+                                <span th:each="category : ${post.categories}">
+                                    <a th:href="@{/postsbycategory/{id}(id=${category.id})}">
+                                        <span class="badge badge-secondary" th:text="${category.name}"></span>
+                                    </a>
+                                </span>
                         </p>
                     </div>
                 </div>
