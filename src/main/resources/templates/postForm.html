@@ -1,104 +1,91 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
-
-    <title>Espedito Melo - Java | Software Development | Cloud | AI | Database</title>
-    <p style="padding-left: 20px"><strong>Espedito Melo</strong> - Java | Software Development | Cloud | AI | Database</p>
-</head>
 
 <body>
-<header>
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h2">Home</span>
-    </nav>
-</header>
+<div layout:fragment="content">
 
-<section>
-    <div class="container" style="width: 60%; padding-bottom: 30 px;">
+    <section>
+        <div class="container" style="width: 60%; padding-bottom: 30 px;">
 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
-                <li class="breadcrumb-item" aria-current="page"><a href="/admin">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">New Post</li>
-            </ol>
-        </nav>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">New Post</li>
+                </ol>
+            </nav>
 
-        <div>
+            <div>
 
-            <th:block th:insert="~{validationMessage}"></th:block>
+                <th:block th:insert="~{validationMessage}"></th:block>
 
-            <form method="post" th:object="${post}">
+                <form method="post" th:object="${post}">
 
-                <div class="form-group">
-                    <label>Categories</label>
-                    <div class="checkbox-group" style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
-                        <div th:each="category : ${categories}" class="form-check">
-                            <input type="checkbox"
-                                   class="form-check-input"
-                                   th:id="'category_' + ${category.id}"
-                                   th:name="categoryIds"
-                                   th:value="${category.id}"
-                                   th:checked="${#lists.contains(selectedCategoryIds, category.id)}">
-                            <label class="form-check-label" th:for="'category_' + ${category.id}" th:text="${category.name}"></label>
+                    <div class="form-group">
+                        <label>Categories</label>
+                        <div class="checkbox-group" style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
+                            <div th:each="category : ${categories}" class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       th:id="'category_' + ${category.id}"
+                                       th:name="categoryIds"
+                                       th:value="${category.id}"
+                                       th:checked="${#lists.contains(selectedCategoryIds, category.id)}">
+                                <label class="form-check-label" th:for="'category_' + ${category.id}" th:text="${category.name}"></label>
+                            </div>
                         </div>
+                        <small class="form-text text-muted">Select one or more categories</small>
                     </div>
-                    <small class="form-text text-muted">Select one or more categories</small>
-                </div>
 
-                <div class="form-group">
-                    <label for="user">User</label>
-                    <select class="form-control" name="user" id="user" th:field="*{user}" required>
-                        <option value="">Select a user</option>
-                        <option th:each="user : ${users}"
-                                th:value="${user.id}"
-                                th:text="${user.username}">
-                        </option>
-                    </select>
+                    <div class="form-group">
+                        <label for="user">User</label>
+                        <select class="form-control" name="user" id="user" th:field="*{user}" required>
+                            <option value="">Select a user</option>
+                            <option th:each="user : ${users}"
+                                    th:value="${user.id}"
+                                    th:text="${user.username}">
+                            </option>
+                        </select>
 
-                    <div th:if="${#fields.hasErrors('user')}" class="invalid-feedback" th:errors="*{user}"></div>
+                        <div th:if="${#fields.hasErrors('user')}" class="invalid-feedback" th:errors="*{user}"></div>
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select class="form-control" name="status" id="status" th:field="*{status}" required>
-                        <option value="">Select a status</option>
-                        <option value="A">Active</option>
-                        <option value="I">Inactive</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status" id="status" th:field="*{status}" required>
+                            <option value="">Select a status</option>
+                            <option value="A">Active</option>
+                            <option value="I">Inactive</option>
+                        </select>
 
-                    <div th:if="${#fields.hasErrors('status')}" class="invalid-feedback" th:errors="*{status}"></div>
+                        <div th:if="${#fields.hasErrors('status')}" class="invalid-feedback" th:errors="*{status}"></div>
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Title *" required>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Title *" required>
 
-                    <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback" th:errors="*{title}"></div>
+                        <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback" th:errors="*{title}"></div>
 
-                </div>
+                    </div>
 
-                <label for="summernote">Body</label>
-                <textarea type="text" class="form-control" id="summernote" th:field="*{body}" placeholder="Text *"></textarea>
-                <div th:if="${#fields.hasErrors('body')}" class="invalid-feedback" th:errors="*{body}"></div>
-                <small class="form-text text-muted">(*) Required</small>
-                <button type="submit" class="btn btn-primary" role="button" style="margin-top: 10px;">Submit</button>
-                <a href="/admin" class="btn btn-light" role="button" style="margin-top: 10px;">Cancel</a>
-            </form>
+                    <label for="summernote">Body</label>
+                    <textarea type="text" class="form-control" id="summernote" th:field="*{body}" placeholder="Text *"></textarea>
+                    <div th:if="${#fields.hasErrors('body')}" class="invalid-feedback" th:errors="*{body}"></div>
+                    <small class="form-text text-muted">(*) Required</small>
+                    <button type="submit" class="btn btn-primary" role="button" style="margin-top: 10px;">Submit</button>
+                    <a href="/admin" class="btn btn-light" role="button" style="margin-top: 10px;">Cancel</a>
+                </form>
+            </div>
+
+
         </div>
-
-
-    </div>
-</section>
-
+    </section>
+</div>
 <script>
     $('#summernote').summernote({
         placeholder: "Text *",
@@ -106,6 +93,5 @@
         height: 300
     });
 </script>
-
 </body>
 </html>

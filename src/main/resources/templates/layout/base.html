@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{fragments/head :: common-head}">
+    <!-- Head será substituído pelo fragmento -->
+</head>
+
+<body>
+<header th:replace="~{fragments/header :: common-header}">
+    <!-- Header será substituído pelo fragmento -->
+</header>
+
+<main class="container-fluid py-4">
+    <div layout:fragment="content">
+        <!-- Conteúdo das páginas será inserido aqui -->
+
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: common-footer}">
+    <!-- Footer será substituído pelo fragmento -->
+</footer>
+</body>
+</html>
