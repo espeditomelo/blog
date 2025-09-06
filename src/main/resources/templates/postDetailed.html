@@ -5,13 +5,49 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 
     <title>Espedito Melo - Java | Software Development | Cloud | AI | Database</title>
-    <p style="padding-left: 20px"><strong>Espedito Melo</strong> - Java | Software Development | Cloud | AI | Database</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTopMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTopMenu">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <label class="nav-link text-white font-weight-bold">Espedito Melo</label>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/posts}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/posts}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/posts}">Socialmedia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/posts}">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </head>
 
 <body>
 <header>
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h2">Home</span>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCategories">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCategories">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" th:each="category : ${allCategories}">
+                    <a class="nav-link text-white" th:href="@{/postsbycategory/{id}(id=${category.id})}"
+                       th:text="${category.name}">
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
 </header>
 

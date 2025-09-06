@@ -8,4 +8,5 @@ public interface CategoryService {
     List<Category> findAll();
     Category findById(Long id);
     Category save(Category category);
+    List<Category> findAllByNameAsc();
 }

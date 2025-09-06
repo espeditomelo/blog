@@ -7,6 +7,7 @@ import com.espeditomelo.blog.service.CategoryService;
 import com.espeditomelo.blog.service.PostService;
 import com.espeditomelo.blog.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 public class PostController {
@@ -29,6 +31,17 @@ public class PostController {
     @Autowired
     UserService userService;
 
+    @ModelAttribute("allCategories")
+    public List<Category> getAllCategories(){
+        List<Category> categories = categoryService.findAllByNameAsc();
+        System.out.println("Carregando categorias: " + categories.size());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        for(Category c : categories){
+            System.out.println(c.getName());
+        }
+        return categories;
+    }
+
     @GetMapping(value = "/")
     public String redirectToPosts(){
         return "redirect:/posts";
@@ -38,11 +51,12 @@ public class PostController {
     public ModelAndView getPosts() {
         ModelAndView modelAndView = new ModelAndView("posts");
         List<Post> posts = postService.findAllWithCategoryAndUser();
+        System.out.println("Carregando posts: " + posts.size());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         modelAndView.addObject("posts", posts);
         return modelAndView;
     }
 
-    // under construction
     @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
     public ModelAndView getPostsByCategory(@PathVariable("id") long id) {
         ModelAndView modelAndView = new ModelAndView("posts");

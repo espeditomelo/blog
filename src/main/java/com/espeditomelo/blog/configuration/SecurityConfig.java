@@ -26,10 +26,10 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/posts/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/posts/**", "/css/**", "/js/**", "/images/**",
+                                "/postsbycategory", "/postsbycategory/**").permitAll()
                         .requestMatchers("/admin", "/newpost", "/newpost/**", "/users", "/users/**",
-                                "/newuser", "/newuser/**", "/edituser", "/edituser/**", "/deleteuser", "/deleteuser/**",
-                                "/postsbycategory", "/postsbycategory/**")
+                                "/newuser", "/newuser/**", "/edituser", "/edituser/**", "/deleteuser", "/deleteuser/**")
                         .authenticated()
                         .anyRequest().authenticated()
                 )
