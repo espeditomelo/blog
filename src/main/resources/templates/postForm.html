@@ -3,10 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/base}">
 
-
 <body>
-<div layout:fragment="content">
 
+<div layout:fragment="content">
     <section>
         <div class="container" style="width: 60%; padding-bottom: 30 px;">
 
@@ -74,7 +73,8 @@
                     </div>
 
                     <label for="summernote">Body</label>
-                    <textarea type="text" class="form-control" id="summernote" th:field="*{body}" placeholder="Text *"></textarea>
+                    <textarea id="summernote" th:field="*{body}" placeholder="Text *"></textarea>
+
                     <div th:if="${#fields.hasErrors('body')}" class="invalid-feedback" th:errors="*{body}"></div>
                     <small class="form-text text-muted">(*) Required</small>
                     <button type="submit" class="btn btn-primary" role="button" style="margin-top: 10px;">Submit</button>
@@ -86,12 +86,17 @@
         </div>
     </section>
 </div>
-<script>
-    $('#summernote').summernote({
-        placeholder: "Text *",
-        tabsize: 2,
-        height: 300
-    });
-</script>
+
+<!-- Script for Summernote -->
+<div layout:fragment="scripts">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
+    </script>
+</div>
+
 </body>
 </html>

@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 public class PostController {
@@ -34,8 +33,8 @@ public class PostController {
     @ModelAttribute("allCategories")
     public List<Category> getAllCategories(){
         List<Category> categories = categoryService.findAllByNameAsc();
-        System.out.println("Carregando categorias: " + categories.size());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        System.out.println("Carregando categorias: " + categories.size());
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         for(Category c : categories){
             System.out.println(c.getName());
         }
@@ -51,8 +50,8 @@ public class PostController {
     public ModelAndView getPosts() {
         ModelAndView modelAndView = new ModelAndView("posts");
         List<Post> posts = postService.findAllWithCategoryAndUser();
-        System.out.println("Carregando posts: " + posts.size());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        System.out.println("Carregando posts: " + posts.size());
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         modelAndView.addObject("posts", posts);
         return modelAndView;
     }

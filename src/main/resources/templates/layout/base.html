@@ -13,12 +13,15 @@
 <main class="container-fluid py-4">
     <div layout:fragment="content">
         <!-- Conteúdo das páginas será inserido aqui -->
-
     </div>
 </main>
 
 <footer th:replace="~{fragments/footer :: common-footer}">
     <!-- Footer será substituído pelo fragmento -->
 </footer>
+
+<!-- Bloco para scripts específicos de cada página -->
+<div layout:fragment="scripts"></div>
+
 </body>
 </html>
