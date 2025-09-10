@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarCategories">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/posts}">All</a>
+                    <a class="nav-link text-white" th:href="@{/posts}"><strong>All</strong></a>
                 </li>
                 <li class="nav-item" th:each="category : ${allCategories}">
                     <a class="nav-link text-white" th:href="@{/postsbycategory/{id}(id=${category.id})}"

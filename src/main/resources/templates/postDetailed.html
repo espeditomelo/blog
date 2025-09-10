@@ -18,6 +18,7 @@
 
                 <article>
                     <h1 class="card-title" style="font-weight: bold; margin-bottom: 20px;"><span th:text="${post.title}"></span></h1>
+
                     <p class="card-subtitle mb-2 text-muted">
                         <i class="material-icons">person_outline</i>
                         <span th:text="${post.user.username}"></span>
@@ -25,6 +26,10 @@
                         <i class="material-icons">date_range</i>
                         <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}"></span>
                     </p>
+
+                    <div th:if="${post.mainImageUrl != null}" style="margin-bottom: 30px; text-align: center;">
+                        <img th:src="${post.mainImageUrl}" alt="Post image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
 
                     <section>
                         <p class="card-text" style="margin-top: 40px;"><span th:utext="${post.body}"></span></p>

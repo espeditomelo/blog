@@ -6,17 +6,21 @@ import com.espeditomelo.blog.model.User;
 import com.espeditomelo.blog.service.CategoryService;
 import com.espeditomelo.blog.service.PostService;
 import com.espeditomelo.blog.service.UserService;
+import com.espeditomelo.blog.service.serviceImpl.ImageStorageService;
 import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.IOException;
 
 @Controller
 public class PostController {
@@ -30,28 +34,8 @@ public class PostController {
     @Autowired
     UserService userService;
 
-//    @ModelAttribute("allCategories")
-//    public List<Category> getAllCategories(){
-//        List<Category> categories = categoryService.findAllByNameAsc();
-////        System.out.println("Carregando categorias: " + categories.size());
-////        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-//        for(Category c : categories){
-//            System.out.println(c.getName());
-//        }
-//        return categories;
-//    }
-
-//    @ModelAttribute("allCategories")
-//    public List<Category> getAllCategories(){
-//        try {
-//            List<Category> categories = categoryService.findAllByNameAsc();
-//            return categories;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Error loading categories ");
-//            return List.of();
-//        }
-//    }
+    @Autowired
+    ImageStorageService imageStorageService;
 
     @GetMapping(value = "/")
     public String redirectToPosts(){
@@ -62,8 +46,6 @@ public class PostController {
     public ModelAndView getPosts() {
         ModelAndView modelAndView = new ModelAndView("posts");
         List<Post> posts = postService.findAllWithCategoryAndUser();
-//        System.out.println("Carregando posts: " + posts.size());
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         modelAndView.addObject("posts", posts);
         return modelAndView;
     }
@@ -92,14 +74,15 @@ public class PostController {
         modelAndView.addObject("users", userService.findAllEnabled());
         modelAndView.addObject("post", new Post());
         modelAndView.addObject("selectedCategoryIds", new ArrayList<Long>());
-
         return modelAndView;
     }
 
     @RequestMapping(value = "/newpost", method = RequestMethod.POST)
     public ModelAndView savePost(@Valid Post post, BindingResult  bindingResult,
                                  RedirectAttributes redirectAttributes,
-                                 @RequestParam(value = "categoryIds", required = true) List<Long> categoryIds) {
+                                 @RequestParam(value = "categoryIds", required = true) List<Long> categoryIds,
+                                 @RequestParam(value = "mainImage", required = false) MultipartFile mainImage) {
+
         if(bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("postForm");
             modelAndView.addObject("categories", categoryService.findAll());
@@ -110,16 +93,43 @@ public class PostController {
             return modelAndView;
         }
 
-        if(categoryIds != null && !categoryIds.isEmpty()) {
-            for(Long categoryId : categoryIds) {
-                Category category = categoryService.findById(categoryId);
-                if (category != null) {
-                    post.addCategory(category);
+        try {
+            // image upload
+            if(mainImage != null && !mainImage.isEmpty()) {
+                String imageUrl = imageStorageService.store(mainImage);
+                post.setMainImageUrl(imageUrl);
+            }
+
+            // categories
+            if(categoryIds != null && !categoryIds.isEmpty()) {
+                for(Long categoryId : categoryIds) {
+                    Category category = categoryService.findById(categoryId);
+                    if (category != null) {
+                        post.addCategory(category);
+                    }
                 }
             }
+
+            postService.save(post);
+            redirectAttributes.addFlashAttribute("success", "Post created successfully");
+            return new ModelAndView("redirect:/posts");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error creating post: " + e.getMessage());
+            return getErrorView(post, categoryIds);
         }
-        postService.save(post);
-        redirectAttributes.addFlashAttribute("success", "Post created successfully");
-        return new ModelAndView("redirect:/posts");
+
+
+
+    }
+
+    private ModelAndView getErrorView(@Valid Post post, List<Long> categoryIds) {
+        ModelAndView modelAndView = new ModelAndView("postForm");
+        modelAndView.addObject("categories", categoryService.findAll());
+        modelAndView.addObject("users", userService.findAllEnabled());
+        modelAndView.addObject("post", post);
+        modelAndView.addObject("selectedCategoryIds", categoryIds != null ? categoryIds : new ArrayList<>());
+        modelAndView.addObject("message", "All required fields must be completed");
+        return modelAndView;
     }
 }

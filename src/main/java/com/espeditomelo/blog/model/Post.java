@@ -48,13 +48,12 @@ public class Post {
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postImage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ImagePost> images = new ArrayList<>();
-
     @OneToMany(mappedBy = "postLike", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Like> likes = new ArrayList<>();
+
+    @Column(name = "main_image_url")
+    private String mainImageUrl;
 
     public Post() {}
 
@@ -134,20 +133,20 @@ public class Post {
         this.postCategories = postCategories;
     }
 
+    public String getMainImageUrl() {
+        return mainImageUrl;
+    }
+
+    public void setMainImageUrl(String mainImageUrl) {
+        this.mainImageUrl = mainImageUrl;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public List<ImagePost> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ImagePost> images) {
-        this.images = images;
     }
 
     public List<Like> getLikes() {

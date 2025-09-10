@@ -35,10 +35,10 @@ public class DummyData {
 
 
         User user2 =  new User();
-        user2.setUsername("admin");
+        user2.setUsername("1");
         user2.setAdmin(true);
         user2.setPassword("1");
-        user2.setEmail("admin@espeditomelo.com");
+        user2.setEmail("1@1.com");
         userService.save(user2);
 
         Category category1 = new Category();

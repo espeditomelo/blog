@@ -20,9 +20,13 @@
 
                 <th:block th:insert="~{validationMessage}"></th:block>
 
-                <form method="post" th:object="${post}">
+                <form method="post" th:object="${post}" enctype="multipart/form-data">
 
                     <div class="form-group">
+                        <label for="mainImage">Main Image</label>
+                        <input type="file" class="form-control-file" id="mainImage" name="mainImage" accept="image/*">
+                        <small class="form-text text-muted">Select a main image for the post (optional)</small>
+
                         <label>Categories</label>
                         <div class="checkbox-group" style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 200px; overflow-y: auto;">
                             <div th:each="category : ${categories}" class="form-check">
