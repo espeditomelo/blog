@@ -1,70 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
-    <title>Espedito Melo - Java | Software Development | Cloud | AI | Database</title>
-    <p style="padding-left: 20px"><strong>Espedito Melo</strong> - Java | Software Development | Cloud | AI | Database</p>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 
 <body>
-<header>
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h2">Home</span>
-    </nav>
-</header>
 
-<section>
-    <div class="container" style="width: 60%; padding-bottom: 30 px;">
+<div layout:fragment="content">
+    <section>
+        <div class="container" style="width: 60%; padding-bottom: 30 px;">
 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
-                <li class="breadcrumb-item" aria-current="page"><a href="/admin">Admin</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Users</li>
-            </ol>
-            <a href="/newuser" class="btn btn-primary" role="button">New User</a>
-        </nav>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Users</li>
+                </ol>
+                <a href="/newuser" class="btn btn-primary" role="button">New User</a>
+            </nav>
 
-        <div class="card">
-            <div class="card-body">
-                <div th:if="${users != null and !users.empty}">
-                    <table class="table table-striped table-hover">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Admin</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.id}"></td>
-                            <td th:text="${user.username}"></td>
-                            <td th:text="${user.email}"></td>
-                            <td>
-                                <span th:if="${user.admin}" class="badge badge-success">Yes</span>
-                                <span th:if="${!user.admin}" class="badge badge-secondary">No</span>
-                            </td>
-                            <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
-                            <td>
-                                <a th:href="@{/edituser/{id}(id=${user.id})}" class="btn btn-sm btn-warning">Edit</a>
-                                <a th:href="@{/deleteuser/{id}(id=${user.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="card">
+                <div class="card-body">
+                    <div th:if="${users != null and !users.empty}">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Admin</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}"></td>
+                                <td th:text="${user.username}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td>
+                                    <span th:if="${user.admin}" class="badge badge-success">Yes</span>
+                                    <span th:if="${!user.admin}" class="badge badge-secondary">No</span>
+                                </td>
+                                <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                                <td>
+                                    <a th:href="@{/edituser/{id}(id=${user.id})}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a th:href="@{/deleteuser/{id}(id=${user.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
 
+        </div>
+    </section>
+</div>
 </body>
 </html>

@@ -30,16 +30,28 @@ public class PostController {
     @Autowired
     UserService userService;
 
-    @ModelAttribute("allCategories")
-    public List<Category> getAllCategories(){
-        List<Category> categories = categoryService.findAllByNameAsc();
-//        System.out.println("Carregando categorias: " + categories.size());
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        for(Category c : categories){
-            System.out.println(c.getName());
-        }
-        return categories;
-    }
+//    @ModelAttribute("allCategories")
+//    public List<Category> getAllCategories(){
+//        List<Category> categories = categoryService.findAllByNameAsc();
+////        System.out.println("Carregando categorias: " + categories.size());
+////        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        for(Category c : categories){
+//            System.out.println(c.getName());
+//        }
+//        return categories;
+//    }
+
+//    @ModelAttribute("allCategories")
+//    public List<Category> getAllCategories(){
+//        try {
+//            List<Category> categories = categoryService.findAllByNameAsc();
+//            return categories;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("Error loading categories ");
+//            return List.of();
+//        }
+//    }
 
     @GetMapping(value = "/")
     public String redirectToPosts(){
