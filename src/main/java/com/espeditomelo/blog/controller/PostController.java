@@ -8,8 +8,10 @@ import com.espeditomelo.blog.service.PostService;
 import com.espeditomelo.blog.service.UserService;
 import com.espeditomelo.blog.service.serviceImpl.ImageStorageService;
 import jakarta.validation.Valid;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,24 +39,64 @@ public class PostController {
     @Autowired
     ImageStorageService imageStorageService;
 
+    private static final int PAGE_SIZE = 5;
+
     @GetMapping(value = "/")
     public String redirectToPosts(){
         return "redirect:/posts";
     }
 
+//    @RequestMapping(value = "/posts", method = RequestMethod.GET)
+//    public ModelAndView getPosts() {
+//        ModelAndView modelAndView = new ModelAndView("posts");
+//        List<Post> posts = postService.findAllWithCategoryAndUser();
+//        modelAndView.addObject("posts", posts);
+//        return modelAndView;
+//    }
+
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
-    public ModelAndView getPosts() {
+    public ModelAndView getPosts(@RequestParam(value = "page", defaultValue = "0") int page) {
         ModelAndView modelAndView = new ModelAndView("posts");
-        List<Post> posts = postService.findAllWithCategoryAndUser();
-        modelAndView.addObject("posts", posts);
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Post> postsPage = postService.findAllWithCategoryAndUserPageable(pageable);
+
+        modelAndView.addObject("posts", postsPage.getContent());
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("totalPages", postsPage.getTotalPages());
+        modelAndView.addObject("totalItems", postsPage.getTotalElements());
+        modelAndView.addObject("hasNext", postsPage.hasNext());
+        modelAndView.addObject("hasPrev", postsPage.hasPrevious());
+
         return modelAndView;
     }
 
+
+//    @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
+//    public ModelAndView getPostsByCategory(@PathVariable("id") long id) {
+//        ModelAndView modelAndView = new ModelAndView("posts");
+//        List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
+//        modelAndView.addObject("posts", posts);
+//        return modelAndView;
+//    }
+
     @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
-    public ModelAndView getPostsByCategory(@PathVariable("id") long id) {
+    public ModelAndView getPostsByCategory(@PathVariable("id") long id,
+                                           @RequestParam(value = "page", defaultValue = "0") int page) {
         ModelAndView modelAndView = new ModelAndView("posts");
-        List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
-        modelAndView.addObject("posts", posts);
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        //List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
+        Page<Post> postsPage = postService.findAllWithCategoryAndUserByCategoryPageable(id, pageable);
+
+        modelAndView.addObject("posts", postsPage.getContent());
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("totalPages", postsPage.getTotalPages());
+        modelAndView.addObject("totalItems", postsPage.getTotalElements());
+        modelAndView.addObject("hasNext", postsPage.hasNext());
+        modelAndView.addObject("hasPrev", postsPage.hasPrevious());
+        modelAndView.addObject("categoryId", id);
+
         return modelAndView;
     }
 

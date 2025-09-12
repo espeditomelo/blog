@@ -17,19 +17,21 @@
                 </nav>
 
                 <article>
-                    <h1 class="card-title" style="font-weight: bold; margin-bottom: 20px;"><span th:text="${post.title}"></span></h1>
-
-                    <p class="card-subtitle mb-2 text-muted">
-                        <i class="material-icons">person_outline</i>
-                        <span th:text="${post.user.username}"></span>
-                        <br>
-                        <i class="material-icons">date_range</i>
-                        <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}"></span>
-                    </p>
 
                     <div th:if="${post.mainImageUrl != null}" style="margin-bottom: 30px; text-align: center;">
                         <img th:src="${post.mainImageUrl}" alt="Post image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     </div>
+
+<!--                    <h1 class="card-title" style="font-weight: bold; margin-bottom: 20px;"><span th:text="${post.title}"></span></h1>-->
+
+                    <h2 class="card-title" style="font-weight: bold; color=blue; padding-top: 5px;">
+                        <span th:text="${post.title}"></span>
+                    </h2>
+
+                    <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
+                        <span th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy')}"></span> - by
+                        <span th:text="${post.user.username}"></span>
+                    </p>
 
                     <section>
                         <p class="card-text" style="margin-top: 40px;"><span th:utext="${post.body}"></span></p>
@@ -38,6 +40,8 @@
 
             </div>
         </section>
+
+
 
 </div>
 </body>
