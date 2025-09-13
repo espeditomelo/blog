@@ -60,9 +60,11 @@ public class PostController {
         modelAndView.addObject("hasNext", postsPage.hasNext());
         modelAndView.addObject("hasPrev", postsPage.hasPrevious());
 
+        //adicionado
+        modelAndView.addObject("selectedCategory", null);
+
         return modelAndView;
     }
-
 
 
     @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
@@ -94,6 +96,8 @@ public class PostController {
         //List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
         Page<Post> postsPage = postService.findAllWithCategoryAndUserByCategoryPageable(id, pageable);
 
+        Category selectedCategory = categoryService.findById(id);
+
         modelAndView.addObject("posts", postsPage.getContent());
         modelAndView.addObject("currentPage", page);
         modelAndView.addObject("totalPages", postsPage.getTotalPages());
@@ -101,6 +105,9 @@ public class PostController {
         modelAndView.addObject("hasNext", postsPage.hasNext());
         modelAndView.addObject("hasPrev", postsPage.hasPrevious());
         modelAndView.addObject("categoryId", id);
+
+        //adicionado
+        modelAndView.addObject("selectedCategory", selectedCategory);
 
         return modelAndView;
     }

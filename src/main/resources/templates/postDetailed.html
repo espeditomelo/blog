@@ -9,20 +9,21 @@
         <section>
             <div class="container" style="width: 60%; padding-bottom: 30 px;">
 
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
-                        <li class="breadcrumb-item" aria-current="page"><a href="/posts">Posts</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Post</li>
-                    </ol>
-                </nav>
+                <span th:if="${selectedCategory != null}">
+                    <nav aria-label="breadcrumb">
+                       <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
+                           <li class="breadcumb-item active" aria-current="page">
+                               <h2 th:text="${selectedCategory.name}"></h2>
+                           </li>
+                       </ol>
+                    </nav>
+                </span>
 
                 <article>
 
                     <div th:if="${post.mainImageUrl != null}" style="margin-bottom: 30px; text-align: center;">
                         <img th:src="${post.mainImageUrl}" alt="Post image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                     </div>
-
-<!--                    <h1 class="card-title" style="font-weight: bold; margin-bottom: 20px;"><span th:text="${post.title}"></span></h1>-->
 
                     <h2 class="card-title" style="font-weight: bold; color=blue; padding-top: 5px;">
                         <span th:text="${post.title}"></span>
@@ -40,8 +41,6 @@
 
             </div>
         </section>
-
-
 
 </div>
 </body>

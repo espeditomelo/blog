@@ -8,22 +8,20 @@
     <section>
         <div class="container" style="width: 60%; padding-bottom: 30 px;">
 
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
-                    <li class="breadcrumb-item active" aria-current="page">Posts</li>
-                </ol>
-            </nav>
+            <span th:if="${selectedCategory != null}">
+                <nav aria-label="breadcrumb">
+                   <ol class="breadcrumb" style="backgound-color: white; padding-left: 0px">
+                       <li class="breadcumb-item active" aria-current="page">
+                           <h2 th:text="${selectedCategory.name}"></h2>
+                       </li>
+                   </ol>
+                </nav>
+            </span>
 
             <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;" th:each="post : ${posts}">
                 <div class="card-body">
 
-<!--                    <a th:href="${(#mvc.url('PC#getPostDetailed').arg(0, post.id)).build()}">-->
-<!--                        <h2 class="card-title" style="font-weight: bold; color=black; padding-top: 5px;">-->
-<!--                            <span th:text="${post.title}"></span>-->
-<!--                        </h2>-->
-<!--                    </a>-->
-
-                    <a th:href="@{/title/{slug}(slug=${post.slug})}">
+                    <a th:href="${post.slug != null} ? @{/title/{slug}(slug=${post.slug})} : @{/posts}">
                         <h2 class="card-title" style="font-weight: bold; color=black; padding-top: 5px;">
                             <span th:text="${post.title}"></span>
                         </h2>
@@ -46,11 +44,11 @@
                         <span th:utext="${#strings.abbreviate(post.body,400)}"></span>
                     </p>
                     <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
-                                <span th:each="category : ${post.categories}">
-                                    <a th:href="@{/postsbycategory/{id}(id=${category.id})}">
-                                        <span class="badge badge-secondary" th:text="${category.name}"></span>
-                                    </a>
-                                </span>
+                        <span th:each="category : ${post.categories}">
+                            <a th:href="@{/postsbycategory/{id}(id=${category.id})}">
+                                <span class="badge badge-secondary" th:text="${category.name}"></span>
+                            </a>
+                        </span>
                     </p>
                 </div>
             </div>
