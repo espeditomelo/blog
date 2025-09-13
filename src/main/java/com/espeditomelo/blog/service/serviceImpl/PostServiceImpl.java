@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -49,6 +50,41 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post save(Post post) {
+        if(post.getSlug() == null || post.getSlug().isEmpty()) {
+            post.setSlug(generateUniqueSlug(post.getTitle()));
+        }
         return postRepository.save(post);
+    }
+
+
+    @Override
+    public Post findBySlugWithCategoryAndUser(String slug) {
+        return postRepository.findBySlugWithCategoryAndUser(slug).orElse(null);
+    }
+
+
+
+    @Override
+    public String generateUniqueSlug(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            return "post";
+        }
+
+        String baseSlug = Post.generateSlug(title);
+
+        if (!postRepository.existsBySlug(baseSlug)) {
+            return baseSlug;
+        }
+
+        List<String> similarSlugs = postRepository.findSimilarSlugs(baseSlug + "%");
+        int counter = 1;
+        String uniqueSlug;
+
+        do {
+            uniqueSlug = baseSlug + "-" + counter;
+            counter++;
+        } while (similarSlugs.contains(uniqueSlug) || postRepository.existsBySlug(uniqueSlug));
+
+        return uniqueSlug;
     }
 }

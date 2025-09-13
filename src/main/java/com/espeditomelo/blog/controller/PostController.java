@@ -46,14 +46,6 @@ public class PostController {
         return "redirect:/posts";
     }
 
-//    @RequestMapping(value = "/posts", method = RequestMethod.GET)
-//    public ModelAndView getPosts() {
-//        ModelAndView modelAndView = new ModelAndView("posts");
-//        List<Post> posts = postService.findAllWithCategoryAndUser();
-//        modelAndView.addObject("posts", posts);
-//        return modelAndView;
-//    }
-
     @RequestMapping(value = "/posts", method = RequestMethod.GET)
     public ModelAndView getPosts(@RequestParam(value = "page", defaultValue = "0") int page) {
         ModelAndView modelAndView = new ModelAndView("posts");
@@ -72,13 +64,26 @@ public class PostController {
     }
 
 
-//    @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
-//    public ModelAndView getPostsByCategory(@PathVariable("id") long id) {
-//        ModelAndView modelAndView = new ModelAndView("posts");
-//        List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
-//        modelAndView.addObject("posts", posts);
-//        return modelAndView;
-//    }
+
+    @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
+    public ModelAndView getPostDetailed(@PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("postDetailed");
+        Post post = postService.findById(id);
+        modelAndView.addObject("post", post);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/title/{slug:[a-z0-9\\-]+}", method = RequestMethod.GET)
+    public ModelAndView getPostBySlug(@PathVariable("slug") String slug) {
+        ModelAndView modelAndView = new ModelAndView("postDetailed");
+        Post post = postService.findBySlugWithCategoryAndUser(slug);
+        if(post == null) {
+            return new ModelAndView("redirect:/posts");
+        }
+        modelAndView.addObject("post", post);
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/postsbycategory/{id}", method = RequestMethod.GET)
     public ModelAndView getPostsByCategory(@PathVariable("id") long id,
@@ -97,14 +102,6 @@ public class PostController {
         modelAndView.addObject("hasPrev", postsPage.hasPrevious());
         modelAndView.addObject("categoryId", id);
 
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET)
-    public ModelAndView getPostDetailed(@PathVariable("id") long id) {
-        ModelAndView modelAndView = new ModelAndView("postDetailed");
-        Post post = postService.findById(id);
-        modelAndView.addObject("post", post);
         return modelAndView;
     }
 

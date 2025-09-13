@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -44,4 +45,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND pc.category.id = :id " +
             "ORDER BY p.createdAt DESC")
     Page<Post> findAllWithCategoryAndUserByCategoryPageable(@Param("id") Long id, Pageable pageable);
+
+    @Query("SELECT p FROM Post p " +
+            "LEFT JOIN FETCH p.user " +
+            "LEFT JOIN FETCH p.postCategories pc " +
+            "LEFT JOIN FETCH pc.category " +
+            "WHERE p.status = 'A' " +
+            "AND p.slug = :slug")
+    Optional<Post> findBySlugWithCategoryAndUser(@Param("slug") String slug);
+
+    boolean existsBySlug(String slug);
+
+    @Query("SELECT p.slug FROM Post p WHERE p.slug LIKE :slugPattern")
+    List<String> findSimilarSlugs(@Param("slugPattern") String slugPattern);
 }

@@ -26,8 +26,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/posts/**", "/css/**", "/js/**", "/images/**",
-                                "/postsbycategory", "/postsbycategory/**").permitAll()
+                        .requestMatchers("/", "/posts","/posts/**", "/css/**", "/js/**", "/images/**",
+                                "/postsbycategory", "/postsbycategory/**", "/title", "/title/**").permitAll()
                         .requestMatchers("/admin", "/admin/**", "/newpost", "/newpost/**", "/users", "/users/**",
                                 "/newuser", "/newuser/**", "/edituser", "/edituser/**", "/deleteuser", "/deleteuser/**")
                         .authenticated()
@@ -47,16 +47,16 @@ public class SecurityConfig {
                 .build();
     }
 
-   @Bean
-   public DaoAuthenticationProvider daoAuthenticationProvider(){
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-   }
+    }
 
-   @Bean
-   public PasswordEncoder passwordEncoder(){
+    @Bean
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-   }
+    }
 }

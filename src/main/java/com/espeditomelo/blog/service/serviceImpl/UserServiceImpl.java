@@ -1,5 +1,6 @@
 package com.espeditomelo.blog.service.serviceImpl;
 
+import com.espeditomelo.blog.model.Post;
 import com.espeditomelo.blog.model.User;
 import com.espeditomelo.blog.model.repository.UserRepository;
 import com.espeditomelo.blog.service.UserService;
@@ -53,4 +54,5 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +22,11 @@ public class Post {
 
     @NotBlank
     @Column(nullable = false)
+    @Size(max = 255)
     private String title;
+
+    @Column(unique = true, nullable = false, length = 300)
+    private String slug;
 
     @NotBlank
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -57,6 +62,43 @@ public class Post {
 
     public Post() {}
 
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
+        this.slug = generateSlug(title);
+    }
+
+    public void generateSlugFromtitle(){
+        if(this.title != null) {
+            this.slug = generateSlug(this.title);
+        }
+    }
+
+
+    public static String generateSlug(String title) {
+        if(title == null || title.trim().isEmpty()) {
+            return "";
+        }
+
+        return title
+                .toLowerCase()
+                .trim()
+                // Remove acentos
+                .replaceAll("[àáâãäå]", "a")
+                .replaceAll("[èéêë]", "e")
+                .replaceAll("[ìíîï]", "i")
+                .replaceAll("[òóôõö]", "o")
+                .replaceAll("[ùúûü]", "u")
+                .replaceAll("[ç]", "c")
+                .replaceAll("[ñ]", "n")
+                // Remove caracteres especiais e substitui espaços por hífens
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .replaceAll("\\s+", "-")
+                .replaceAll("-+", "-")
+                .replaceAll("^-|-$", "");
+    }
+
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -72,6 +114,17 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
+        if(title != null && (this.slug == null || this.slug.isEmpty())) {
+            this.slug = generateSlug(title);
+        }
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getBody() {
@@ -156,4 +209,6 @@ public class Post {
     public void setLikes(List<Like> likes) {
         this.likes = likes;
     }
+
+
 }

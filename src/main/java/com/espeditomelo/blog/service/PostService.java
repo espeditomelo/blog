@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostService {
 
@@ -18,4 +19,6 @@ public interface PostService {
     Post findById(Long id);
     Post save(Post post);
 
+    Post findBySlugWithCategoryAndUser(String slug);
+    String generateUniqueSlug(String title);
 }
