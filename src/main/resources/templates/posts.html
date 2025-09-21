@@ -42,7 +42,11 @@
 
                     <p class="card-text">
                         <span th:utext="${#strings.abbreviate(post.body,400)}"></span>
+                        <a th:href="${post.slug != null} ? @{/title/{slug}(slug=${post.slug})} : @{/posts}">
+                            Read more
+                        </a>
                     </p>
+
                     <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
                         <span th:each="category : ${post.categories}">
                             <a th:href="@{/postsbycategory/{id}(id=${category.id})}">

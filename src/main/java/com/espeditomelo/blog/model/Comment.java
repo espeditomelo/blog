@@ -22,7 +22,11 @@ public class Comment {
     private String content;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = 100)
+    private String username;
+
+    @NotBlank
+    @Column(nullable = false)
     private String email;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -59,6 +63,14 @@ public class Comment {
 
     public void setContent( String content) {
         this.content = content;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(@NotBlank String username) {
+        this.username = username;
     }
 
     public String getEmail() {

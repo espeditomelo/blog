@@ -1,6 +1,7 @@
 package com.espeditomelo.blog.controller;
 
 import com.espeditomelo.blog.model.Category;
+import com.espeditomelo.blog.model.Comment;
 import com.espeditomelo.blog.model.Post;
 import com.espeditomelo.blog.model.User;
 import com.espeditomelo.blog.service.CategoryService;
@@ -59,8 +60,6 @@ public class PostController {
         modelAndView.addObject("totalItems", postsPage.getTotalElements());
         modelAndView.addObject("hasNext", postsPage.hasNext());
         modelAndView.addObject("hasPrev", postsPage.hasPrevious());
-
-        //adicionado
         modelAndView.addObject("selectedCategory", null);
 
         return modelAndView;
@@ -72,6 +71,10 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("postDetailed");
         Post post = postService.findById(id);
         modelAndView.addObject("post", post);
+
+        // comment added
+        modelAndView.addObject("comment", new Comment());
+
         return modelAndView;
     }
 
@@ -83,6 +86,10 @@ public class PostController {
             return new ModelAndView("redirect:/posts");
         }
         modelAndView.addObject("post", post);
+
+        //adicionado
+        modelAndView.addObject("comment", new Comment());
+
         return modelAndView;
     }
 
@@ -93,7 +100,6 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("posts");
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        //List<Post> posts = postService.findAllWithCategoryAndUserByCategory(id);
         Page<Post> postsPage = postService.findAllWithCategoryAndUserByCategoryPageable(id, pageable);
 
         Category selectedCategory = categoryService.findById(id);
@@ -115,7 +121,7 @@ public class PostController {
     @RequestMapping(value = "/newpost", method = RequestMethod.GET)
     public ModelAndView getPostForm() {
         ModelAndView modelAndView = new ModelAndView("postForm");
-        List<User> users = userService.findAllEnabled();
+              List<User> users = userService.findAllEnabled();
         modelAndView.addObject("categories", categoryService.findAll());
         modelAndView.addObject("users", userService.findAllEnabled());
         modelAndView.addObject("post", new Post());
